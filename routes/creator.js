@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { CreatorModel } = require('../db');
+const { CreatorModel, CourseModel } = require('../db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { z } = require('zod');
@@ -69,21 +69,49 @@ creatorRouter.post('/login', async (req, res) => {
 creatorRouter.use(creatorMiddleware);
 
 
-creatorRouter.post('/course', (req, res) => {
+creatorRouter.post('/course', async (req, res) => {
+    const { title, description, price, imageUrl } = req.body;
+    const creatorId = req.creatorId;
+
+    await CourseModel.create({
+        title,
+        description,
+        price,
+        imageUrl,
+        creatorId
+    });
+
     res.json({
-        creatorId: req.creatorId,
         message: "Successful course created"
     });
 });
 
-creatorRouter.put('/course', (req, res) => {
+creatorRouter.put('/course', async (req, res) => {
+    const { title, description, price, imageUrl, courseId } = req.body;
+    const creatorId = req.creatorId;
+
+    await CourseModel.updateOne({
+        creatorId,
+        courseId
+    }, {
+        title,
+        description,
+        price,
+        imageUrl,
+        creatorId
+    });
     res.json({
         message: "Successful course updated"
     });
 });
 
-creatorRouter.get('/course/bulk', (req, res) => {
+creatorRouter.get('/course/bulk', async (req, res) => {
+
+    const courses = await CourseModel.find({
+        creatorId: req.creatorId
+    });
     res.json({
+        courses: courses,
         message: "All your courses"
     });
 });
