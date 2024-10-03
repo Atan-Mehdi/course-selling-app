@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'kuchbhirakhlepassword';
 const bcrypt = require('bcrypt');
 const { z } = require("zod");
-
 const userRouter = Router();
+const { userMiddleware } = require('../middlewares/user');
 
 userRouter.post('/signup', async (req, res) => {
 
@@ -67,8 +67,11 @@ userRouter.post('/login', async (req, res) => {
     }
 });
 
+userRouter.use(userMiddleware);
+
 userRouter.post('/purchase', (req, res) => {
     res.json({
+        userId: req.userId,
         message: "Successful Purchase"
     });
 });
