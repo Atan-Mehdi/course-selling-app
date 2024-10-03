@@ -18,6 +18,6 @@ app.use('/creator', creatorRouter);
 
 
 app.listen(3000, async () => {
-    await mongoose.connect("mongodb+srv://atan:07cMghzP6Eb93CWy@cluster0.o4smy.mongodb.net/course-selling-app");
+    // await mongoose.connect("mongodb+srv://atan:07cMghzP6Eb93CWy@cluster0.o4smy.mongodb.net/course-selling-app");
     console.log("You are listning to port 3000");
 });
