@@ -1,8 +1,22 @@
 const { Router } = require('express');
+const { CreatorModel } = require('../db');
 const creatorRouter = Router();
 
 
-creatorRouter.post('/signup', (req, res) => {
+creatorRouter.post('/signup', async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+
+
+    await CreatorModel.create({
+        email,
+        password,
+        firstName,
+        lastName
+    });
+
     res.json({
         message: "Successful creator signup"
     });
