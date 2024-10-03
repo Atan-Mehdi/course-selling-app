@@ -51,15 +51,21 @@ userRouter.post('/login', async (req, res) => {
     const user = await UserModel.findOne({
         email
     });
+    if (user) {
+        const response = await bcrypt.compare(password, user.password);
+        if (response) {
+            const token = jwt.sign({
+                id: user._id.toString()
+            }, JWT_SECRET);
+            res.json({
+                token: token
+            });
+        } else {
+            res.status(403).json({
+                message: "Invalid Credential"
+            });
 
-    const response = await bcrypt.compare(password, user.password);
-    if (response) {
-        const token = jwt.sign({
-            id: user._id.toString()
-        }, JWT_SECRET);
-        res.json({
-            token: token
-        });
+        }
     } else {
         res.status(403).json({
             message: "Invalid Credential"
