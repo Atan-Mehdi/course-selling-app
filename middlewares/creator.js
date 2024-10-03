@@ -1,13 +1,9 @@
-const express = require('express');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'kuchbhirakhlepassword';
-
-const app = express();
 
 function creatorMiddleware(req, res, next) {
     const token = req.headers.token;
     if (token) {
-        const creator = jwt.verify(token, JWT_SECRET);
+        const creator = jwt.verify(token, process.env.JWT_CREATOR_SECRET);
         if (creator) {
             req.creatorId = creator.id;
             next();

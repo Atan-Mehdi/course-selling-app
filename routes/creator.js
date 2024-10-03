@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const { CreatorModel } = require('../db');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'kuchbhirakhlepassword';
 const bcrypt = require('bcrypt');
 const { z } = require('zod');
 const { creatorMiddleware } = require('../middlewares/creator');
@@ -55,7 +54,7 @@ creatorRouter.post('/login', async (req, res) => {
         if (response) {
             const token = jwt.sign({
                 id: creator._id.toString()
-            }, JWT_SECRET);
+            }, process.env.JWT_CREATOR_SECRET);
             res.json({
                 token: token
             });

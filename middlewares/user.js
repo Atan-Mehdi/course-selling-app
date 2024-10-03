@@ -1,13 +1,9 @@
-const express = require('express');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'kuchbhirakhlepassword';
-
-const app = express();
 
 function userMiddleware(req, res, next) {
     const token = req.headers.token;
     if (token) {
-        const user = jwt.verify(token, JWT_SECRET);
+        const user = jwt.verify(token, process.env.JWT_USER_SECRET);
         if (user) {
             req.userId = user.id;
             next();
